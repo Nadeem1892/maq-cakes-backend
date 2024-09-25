@@ -1,6 +1,6 @@
 const router = require("express").Router()
-
-// router.use("/category", categoryRoutes)
+const categoryRoutes = require("../maq-api/src/category/route.category")
+router.use("/category", categoryRoutes)
 
 
 module.exports = router
