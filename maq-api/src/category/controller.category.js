@@ -106,55 +106,56 @@ categoryController.updateCategory = async (req, res) => {
 
 //Delete Category
 categoryController.deleteCategory = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Check if the category exists
-    const existingCategory = await serviceCategory.getCategoryById(id);
-    if (!existingCategory) {
-      return res.send({
-        status: false,
-        message: "Category not found.",
+    try {
+      const { id } = req.params;
+  
+      // Check if the category exists
+      const existingCategory = await serviceCategory.getCategoryById(id);
+      if (!existingCategory) {
+        return res.status(404).json({
+          status: false,
+          message: "Category not found.",
+          data: null,
+        });
+      }
+  
+      // Check if the category is already deleted
+      if (existingCategory.isDeleted) {
+        return res.status(400).json({
+          status: false,
+          message: "This category has already been deleted.",
+          data: existingCategory._id,
+        });
+      }
+  
+      // Soft delete the category (set isDeleted to true)
+      const deleteCategory = await serviceCategory.deleteCategory(id, {
+        isDeleted: true,
+      });
+  
+      // Verify if the deletion was successful
+      if (deleteCategory && deleteCategory.isDeleted) {
+        return res.status(200).json({
+          status: true,
+          message: "Category deleted successfully.",
+          data: deleteCategory._id,
+        });
+      } else {
+        return res.status(500).json({
+          status: false,
+          message: "Failed to delete the category.",
+          data: null,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "ERR",
+        message: "Something went wrong. Please try again later.",
         data: null,
       });
     }
-
-    // Check if the category is already deleted
-    if (existingCategory.isDeleted) {
-      return res.send({
-        status: false,
-        message: "This category has already been deleted.",
-        data: existingCategory._id,
-      });
-    }
-
-    // Delete the category (soft delete by setting isDeleted to true)
-    const deleteCategory = await serviceCategory.deleteCategory(id, {
-      $set: { isDeleted: true },
-    });
-
-    // Verify the deletion
-    if (deleteCategory.isDeleted) {
-      return res.send({
-        status: true,
-        message: "Category deleted successfully.",
-        data: deleteCategory._id,
-      });
-    } else {
-      return res.send({
-        status: false,
-        message: "Failed to delete the category.",
-        data: null,
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    return res.send({
-      status: "ERR",
-      message: "Something went wrong. Please try again later.",
-      data: null,
-    });
-  }
-};
+  };
+  
 
 module.exports = categoryController;

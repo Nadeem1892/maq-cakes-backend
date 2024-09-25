@@ -25,7 +25,7 @@ serviceCategory.update = async (id,{categoryName}) => {
 
 //Delete Category
 serviceCategory.deleteCategory = async (id,updateFields) => {
-return await Category.findByIdAndUpdate({_id:id},{...updateFields},{new:true})
+return await Category.findByIdAndUpdate(id,{...updateFields},{new:true})
 }
 
 module.exports = serviceCategory
