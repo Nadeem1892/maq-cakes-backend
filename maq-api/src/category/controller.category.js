@@ -78,17 +78,17 @@ categoryController.updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { categoryName } = req.body;
+   const existCategory = await serviceCategory.findByDeleteCategory(id)
+   
+   if (existCategory.isDeleted) {
+    return res.send({
+      status: false,
+      message: "Category not found.",
+      data: null,
+    });
+  }
 
     const updateCategory = await serviceCategory.update(id, { categoryName });
-
-    if (!updateCategory) {
-      return res.send({
-        status: false,
-        message: "Category not found.",
-        data: null,
-      });
-    }
-
     return res.send({
       status: true,
       message: "Category updated successfully!",

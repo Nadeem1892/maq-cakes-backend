@@ -9,7 +9,7 @@ return await Category.create({categoryName})
 
 // Get all  Category Service
 serviceCategory.getAllCategory = async () => {
-    return await Category.find({ isDeleted: { $ne: true } })
+    return await Category.find({ isDeleted: { $ne: true }})
 }
 
 //get Category by id 
@@ -18,10 +18,17 @@ serviceCategory.getCategoryById = async (id) => {
     return await Category.findById(id);
   },
 
+
+  //find by category is deleting
+  serviceCategory.findByDeleteCategory = async (id) => {
+    return await Category.findById({ _id: id})
+  }
+
 //update Category
 serviceCategory.update = async (id,{categoryName}) => {
-    return await Category.findByIdAndUpdate({_id:id},{categoryName},{ new: true })
+    return await Category.findByIdAndUpdate({ _id: id},{categoryName},{ new: true })
 }
+
 
 //Delete Category
 serviceCategory.deleteCategory = async (id,updateFields) => {
