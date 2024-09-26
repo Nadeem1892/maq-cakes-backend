@@ -7,5 +7,6 @@ const { subCategoryValidationSchema, updateSubCategoryValidationSchema } = requi
 router.post("/add-sub-category",validate(subCategoryValidationSchema), subCategoryController.addSubCategory)
 router.get("/get-sub-categories/:id", subCategoryController.getSubCategory)
 router.patch("/update-sub-category/:id",validate(updateSubCategoryValidationSchema), subCategoryController.updateSubCategory)
+router.delete("/delete-sub-category/:id", subCategoryController.daleteSubCategory)
 
 module.exports = router

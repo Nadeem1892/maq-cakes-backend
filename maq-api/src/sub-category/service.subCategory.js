@@ -8,7 +8,7 @@ serviceSubCategory.add = async ({ subCategoryName, categoryId }) => {
 
 //get subCategory
 serviceSubCategory.get = async (categoryId) => {
-  return await SubCategory.find({categoryId});
+  return await SubCategory.find({categoryId, isDeleted: { $ne: true } });
 };
 
 //update subCategory
@@ -19,4 +19,19 @@ serviceSubCategory.update = async (id, { subCategoryName }) => {
     { new: true }
   );
 };
+
+
+//get Sub Category by id 
+serviceSubCategory.getSubCategoryById = async (id) => {
+  // Fetch the user by ID from the database
+  return await SubCategory.findById(id);
+},
+
+
+//Delete Category
+serviceSubCategory.delete = async (id,updateFields) => {
+  
+  return await SubCategory.findByIdAndUpdate(id,{...updateFields},{new:true})
+  }
+
 module.exports = serviceSubCategory;

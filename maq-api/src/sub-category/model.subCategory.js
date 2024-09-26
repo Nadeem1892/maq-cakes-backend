@@ -10,6 +10,10 @@ const subCategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isDeleted:{
+        type:Boolean,
+        required:false
+    },
   },
   { timestamps: true }
 );
