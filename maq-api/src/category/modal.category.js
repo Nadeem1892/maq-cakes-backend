@@ -5,10 +5,11 @@ const categorySchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  isDeleted:{
-    type:Boolean,
-    required:false
-},
+  isDeleted: {
+    type: Boolean,
+    default: false, // Default value set to false
+    required: false
+  }
 },{ timestamps: true });
 
 const Category = mongoose.model("category", categorySchema);

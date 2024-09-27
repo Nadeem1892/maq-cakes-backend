@@ -26,7 +26,7 @@ serviceFlavour.update = async (id, { flavourName }) => {
     );
   };
 
-//Update
+//delete
 serviceFlavour.delete = async (id) => {
     return await Flavour.findOneAndUpdate(
         { _id: id, isDeleted: false },
