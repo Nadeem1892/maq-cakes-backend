@@ -46,7 +46,7 @@ controllerFlavour.updateFlavour = async (req, res) => {
 
 };
 
-//dlete flavoure
+//delete flavoure
 controllerFlavour.deleteFlavour = async (req, res) => {};
 
 module.exports = controllerFlavour;
