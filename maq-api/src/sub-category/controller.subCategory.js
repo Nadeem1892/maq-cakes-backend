@@ -62,9 +62,7 @@ subCategoryController.updateSubCategory = async (req, res) => {
     const { id } = req.params;
     const { subCategoryName } = req.body;
 
-    const updateSubCategory = await subCategoryService.update(id, {
-      subCategoryName,
-    });
+    const updateSubCategory = await subCategoryService.update(id, {subCategoryName});
 
     if (!updateSubCategory) {
       return res.send({

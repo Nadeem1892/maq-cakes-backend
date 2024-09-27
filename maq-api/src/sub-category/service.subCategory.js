@@ -21,13 +21,12 @@ serviceSubCategory.get = async () => {
 
 //update subCategory
 serviceSubCategory.update = async (id, { subCategoryName }) => {
-  return await SubCategory.findByIdAndUpdate(
-    { _id: id },
+  return await SubCategory.findOneAndUpdate(
+    { _id: id,isDeleted: false  },
     { subCategoryName },
     { new: true }
   );
 };
-
 
 
   //Delete Category
