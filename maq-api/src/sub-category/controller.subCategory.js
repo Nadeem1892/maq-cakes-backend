@@ -7,13 +7,23 @@ subCategoryController.addSubCategory = async (req, res) => {
   try {
     const { subCategoryName, categoryId } = req.body;
 
+    const existSubCategory = await serviceSubCategory.existingSubCategory(
+      subCategoryName
+    );
+
+    if (existSubCategory) {
+      return res.status(400).json({
+        status: false,
+        message: `Sub-Category '${subCategoryName}' already exists.`,
+      });
+    }
     const addSubCategory = await subCategoryService.add({
       subCategoryName,
       categoryId,
     });
     return res.send({
       status: true,
-      message: "SubCategory created successfully!",
+      message: "Sub-Category created successfully!",
       data: addSubCategory,
     });
   } catch (error) {
@@ -29,19 +39,8 @@ subCategoryController.addSubCategory = async (req, res) => {
 //get subCategory
 subCategoryController.getSubCategory = async (req, res) => {
   try {
-    const { id } = req.params;
+    const getSubCategory = await subCategoryService.get();
 
-    const getSubCategory = await subCategoryService.get(id);
-
-    // // Check if getSubCategory is an empty array
-    if (!getSubCategory || getSubCategory.length === 0) {
-        return res.send({
-          status: false,
-          message: "Category not found.",
-          data: null,
-        });
-      }
-  
     return res.send({
       status: true,
       message: "Sub-categories retrieved successfully.",
@@ -92,55 +91,32 @@ subCategoryController.updateSubCategory = async (req, res) => {
 
 //Delete subCategory
 subCategoryController.daleteSubCategory = async (req, res) => {
-    try {
-        const { id } = req.params
-       
-        const existingSubCategory = await serviceSubCategory.getSubCategoryById(id);
-       
-        if (!existingSubCategory) {
-          return res.status(404).json({
-            status: false,
-            message: "Category not found.",
-            data: null,
-          });
-        }
-    
-        // Check if the category is already deleted
-        if (existingSubCategory.isDeleted) {
-          return res.status(400).json({
-            status: false,
-            message: "This sub-category has already been deleted.",
-            data: existingSubCategory._id,
-          });
-        }
-    
-        // Soft delete the category (set isDeleted to true)
-        const deleteCategory = await serviceSubCategory.delete(id, {
-          isDeleted: true,
-        });
+  try {
+    const { id } = req.params;
 
-    
-        // Verify if the deletion was successful
-        if (deleteCategory && deleteCategory.isDeleted) {
-          return res.status(200).json({
-            status: true,
-            message: "Sub-category deleted successfully.",
-            data: deleteCategory._id,
-          });
-        } else {
-          return res.status(500).json({
-            status: false,
-            message: "Failed to delete the sub-category.",
-            data: null,
-          });
-        }
-    } catch (error) {
-        return res.status(500).json({
-            status: "ERR",
-            message: "Something went wrong. Please try again later.",
-            data: null,
-          });
+    // Soft delete the category (set isDeleted to true)
+    const deleteSubCategory = await serviceSubCategory.delete(id);
+
+    //check exist ot not
+    if (!deleteSubCategory) {
+      return res.status(404).json({
+        status: false,
+        message: "Sub-Category not found or already deleted.",
+      });
     }
-}
+
+    return res.status(200).json({
+      status: true,
+      message: "Sub-category deleted successfully.",
+      data: deleteSubCategory._id,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "ERR",
+      message: "Something went wrong. Please try again later.",
+      data: null,
+    });
+  }
+};
 
 module.exports = subCategoryController;

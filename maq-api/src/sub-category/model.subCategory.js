@@ -12,6 +12,7 @@ const subCategorySchema = new mongoose.Schema(
     },
     isDeleted:{
         type:Boolean,
+        default:false,
         required:false
     },
   },
