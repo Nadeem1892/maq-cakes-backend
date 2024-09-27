@@ -4,7 +4,7 @@ const validate = require("../../middelWere/validationMiddleware")
 const {flavourValidationSchema} = require("../validators/flavourValidation")
 
 router.post("/add-flavour",validate(flavourValidationSchema), flavourController.addFlavour)
-router.get("/get-flavour", flavourController.getFlavours)
+router.get("/get-flavours", flavourController.getFlavours)
 router.patch("/update-flavour/:id",validate(flavourValidationSchema), flavourController.updateFlavour)
 router.delete("/delete-flavour/:id", flavourController.deleteFlavour)
 
