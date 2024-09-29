@@ -36,7 +36,7 @@ subCategoryController.addSubCategory = async (req, res) => {
   }
 };
 
-//get subCategory
+//get subCategoes
 subCategoryController.getSubCategory = async (req, res) => {
   try {
     const getSubCategory = await subCategoryService.get();
