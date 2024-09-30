@@ -15,8 +15,9 @@ serviceSubCategory.add = async ({ subCategoryName, categoryId }) => {
 };
 
 //get subCategory
-serviceSubCategory.get = async () => {
-  return await SubCategory.find({ isDeleted: false });
+serviceSubCategory.get = async (id) => {
+
+  return await SubCategory.find({ categoryId: id, isDeleted: false });
 };
 
 //update subCategory

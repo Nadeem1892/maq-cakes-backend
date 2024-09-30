@@ -1,4 +1,3 @@
-const serviceSubCategory = require("./service.subCategory");
 const subCategoryService = require("./service.subCategory");
 const subCategoryController = {};
 
@@ -7,7 +6,7 @@ subCategoryController.addSubCategory = async (req, res) => {
   try {
     const { subCategoryName, categoryId } = req.body;
 
-    const existSubCategory = await serviceSubCategory.existingSubCategory(
+    const existSubCategory = await subCategoryService.existingSubCategory(
       subCategoryName
     );
 
@@ -39,7 +38,17 @@ subCategoryController.addSubCategory = async (req, res) => {
 //get subCategoes
 subCategoryController.getSubCategory = async (req, res) => {
   try {
-    const getSubCategory = await subCategoryService.get();
+    const {id} = req.params
+   
+    const getSubCategory = await subCategoryService.get(id);
+ 
+
+    if (getSubCategory.length === 0) {
+      return res.status(404).send({
+        status: false,
+        message: "Sub-category not found.",
+      });
+    }
 
     return res.send({
       status: true,
