@@ -1,33 +1,85 @@
-const serviceProduct = require('./service.product')
+const serviceProduct = require("./service.product");
 
-const productController = {}
+const productController = {};
 
 //Add Product
 productController.addProduct = async (req, res) => {
-try {
-  
+  try {
     const existingProduct = await serviceProduct.existingProduct(req.body.name);
     if (existingProduct) {
-        return res.status(400).json({
-          status: false,
-          message: `Product '${req.body.name}' already exists.`,
-        });
-      }
-    const product = await serviceProduct.add(req.body)
-    console.log(product)
-      return res.status(201).json({
-        status: true,
-        message: `Product added successfully.`,
-        data: product,
-      });
-} catch (error) {
-    return res.status(500).json({
+      return res.status(400).json({
         status: false,
-        message: "Failed to add flavour.",
-        error: error.message, // Send the error message for debugging
+        message: `Product '${req.body.name}' already exists.`,
       });
-}
-}
+    }
+    const product = await serviceProduct.add(req.body);
+    console.log(product);
+    return res.status(201).json({
+      status: true,
+      message: `Product added successfully.`,
+      data: product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "Failed to add flavour.",
+      error: error.message, // Send the error message for debugging
+    });
+  }
+};
 
+// get all product by category
+productController.getAllProductByCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productByCategory = await serviceProduct.getAllByCategory(id);
+    if (productByCategory.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: `Products not Found.`,
+      });
+    }
 
-module.exports = productController
+    return res.send({
+      status: true,
+      message: "Products retrieved successfully.",
+      data: productByCategory,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching Products. Please try again later.",
+      error: error.message,
+    });
+  }
+};
+
+//get all product by sub Category
+productController.getAllProductBySubCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productBySubCategory = await serviceProduct.getAllBySubCategory(id);
+    if (productBySubCategory.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: `Products not Found.`,
+      });
+    }
+
+    return res.send({
+      status: true,
+      message: "Products retrieved successfully.",
+      data: productBySubCategory,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching Products. Please try again later.",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = productController;
