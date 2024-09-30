@@ -111,5 +111,34 @@ productController.updateProduct = async (req, res) => {
 }
 
 
+// Delete
+productController.deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+    
+        const deletedProduct = await serviceProduct.delete(id);
+        
+        //check exist ot not
+        if (!deletedProduct) {
+          return res.status(404).json({
+            status: false,
+            message: "Product not found or already deleted.",
+          });
+        }
+    
+        return res.status(200).json({
+            status: true,
+            message: "Product deleted successfully."
+          });
+      } catch (error) {
+        console.error("Delete Error:", error);
+        return res.status(500).json({
+          status: false,
+          message: "An error occurred while deleting the Product."
+        });
+      }
+}
+
+
 
 module.exports = productController;

@@ -10,4 +10,7 @@ router.get("/get-products-sub-category/:id", productController.getAllProductBySu
 //update product
 router.patch("/update-product/:id",validate(addProductSchema), productController.updateProduct)
 
+//Delete Products 
+router.delete("/delete-product/:id", productController.deleteProduct)
+
 module.exports = router

@@ -33,4 +33,17 @@ productService.update = async (id, updateData) => {
       { new: true }                   // Return the updated product
     );
   };
+
+
+  //delete
+  productService.delete = async (id) => {
+    return await Product.findOneAndUpdate(
+        { _id: id, isDeleted: false },
+        { isDeleted: true },
+        { new: true }
+    );
+  };
+
+
+
 module.exports = productService;
