@@ -24,4 +24,13 @@ productService.getAllByCategory = async (id) => {
 productService.getAllBySubCategory = async (id) => {
     return await Product.find({subCategory:id, isDeleted:false})
 }
+
+//Update
+productService.update = async (id, updateData) => {
+    return await Product.findOneAndUpdate(
+      { _id: id, isDeleted: false },  // Ensure the product exists and is not deleted
+      { $set: updateData },           // Update the fields based on the updateData object
+      { new: true }                   // Return the updated product
+    );
+  };
 module.exports = productService;

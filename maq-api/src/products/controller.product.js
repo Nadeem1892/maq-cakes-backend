@@ -13,7 +13,7 @@ productController.addProduct = async (req, res) => {
       });
     }
     const product = await serviceProduct.add(req.body);
-    console.log(product);
+    
     return res.status(201).json({
       status: true,
       message: `Product added successfully.`,
@@ -81,5 +81,35 @@ productController.getAllProductBySubCategory = async (req, res) => {
     });
   }
 };
+
+// update 
+productController.updateProduct = async (req, res) => {
+    try {
+        const {id} = req.params
+        const updateData = req.body;
+
+        const updatedProduct = await serviceProduct.update(id, updateData);
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+              status: false,
+              message: "Product not found or already deleted.",
+            });
+          }
+          return res.status(200).json({
+            status: true,
+            message: "Product updated successfully.",
+            data: updatedProduct,
+          });
+    } catch (error) {
+          return res.status(500).json({
+      status: false,
+      message: "Failed to update product.",
+      error: error.message,
+    });
+    }
+}
+
+
 
 module.exports = productController;
