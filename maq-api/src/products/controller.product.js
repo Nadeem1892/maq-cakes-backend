@@ -82,7 +82,7 @@ productController.getAllProductBySubCategory = async (req, res) => {
   }
 };
 
-// update 
+// update product
 productController.updateProduct = async (req, res) => {
     try {
         const {id} = req.params
