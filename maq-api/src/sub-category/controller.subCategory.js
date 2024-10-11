@@ -38,28 +38,37 @@ subCategoryController.addSubCategory = async (req, res) => {
 //get subCategoes
 subCategoryController.getSubCategory = async (req, res) => {
   try {
-    const {id} = req.params
-   
-    const getSubCategory = await subCategoryService.get(id);
- 
+    const { id } = req.params;
+    const { page = 1, limit = 10 } = req.query; // Get pagination params from query
 
-    if (getSubCategory.length === 0) {
-      return res.status(404).send({
-        status: false,
-        message: "Sub-category not found.",
+    if (id) {
+      const getSubCategory = await subCategoryService.get(id);
+
+      if (getSubCategory.length === 0) {
+        return res.status(404).send({
+          status: false,
+          message: "Sub-category not found.",
+        });
+      }
+
+      return res.send({
+        status: true,
+        message: "Sub-categories retrieved successfully.",
+        data: getSubCategory,
+      });
+    } else {
+      const { total, subCategories } = await subCategoryService.getAll(page, limit);
+      return res.send({
+        status: true,
+        message: "All sub-categories retrieved successfully.",
+        total, // Total number of subcategories
+        data: subCategories,
       });
     }
-
-    return res.send({
-      status: true,
-      message: "Sub-categories retrieved successfully.",
-      data: getSubCategory,
-    });
   } catch (error) {
-    return res.send({
+    return res.status(500).send({
       status: false,
-      message:
-        "Oops! Something went wrong while fetching sub-categories. Please try again later.",
+      message: "Oops! Something went wrong while fetching sub-categories. Please try again later.",
       error: error.message,
     });
   }
