@@ -82,6 +82,31 @@ productController.getAllProductBySubCategory = async (req, res) => {
   }
 };
 
+//get all products 
+// productController.js
+productController.getAll = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
+
+  try {
+    const getAllProducts = await serviceProduct.getAll(page, limit);
+    
+    // Get total count for pagination
+    const totalProducts = await serviceProduct.countAll();
+
+    return res.status(200).json({
+      totalProducts,
+      totalPages: Math.ceil(totalProducts / limit),
+      currentPage: page,
+      products: getAllProducts,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
 // update product
 productController.updateProduct = async (req, res) => {
     try {

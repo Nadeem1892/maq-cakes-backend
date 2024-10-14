@@ -25,6 +25,19 @@ productService.getAllBySubCategory = async (id) => {
     return await Product.find({subCategory:id, isDeleted:false})
 }
 
+//  productService.js
+productService.getAll = async (page, limit) => {
+  const skip = (page - 1) * limit; // Calculate the number of documents to skip
+  return await Product.find({ isDeleted: false })
+                      .skip(skip)
+                      .limit(limit);
+};
+
+// Add a function to count all products
+productService.countAll = async () => {
+  return await Product.countDocuments({ isDeleted: false });
+};
+
 //Update
 productService.update = async (id, updateData) => {
     return await Product.findOneAndUpdate(
