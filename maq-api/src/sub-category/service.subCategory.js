@@ -30,6 +30,12 @@ serviceSubCategory.getAll = async (page = 1, limit = 10) => {
   return { total, subCategories };
 };
 
+// //get Category by id 
+serviceSubCategory.getSubCategoryById = async (id) => {
+  // Fetch the user by ID from the database
+  return await SubCategory.findById(id);
+},
+
 //update subCategory
 serviceSubCategory.update = async (id, { subCategoryName }) => {
   return await SubCategory.findOneAndUpdate(
@@ -38,15 +44,13 @@ serviceSubCategory.update = async (id, { subCategoryName }) => {
     { new: true }
   );
 };
-
-
   //Delete Category
-  serviceSubCategory.delete = async (id) => {
+serviceSubCategory.delete = async (id) => {
     return await SubCategory.findOneAndUpdate(
       { _id: id, isDeleted: false },
         { isDeleted: true },
         { new: true }
     );
-  };
+};
 
 module.exports = serviceSubCategory;

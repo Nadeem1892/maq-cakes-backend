@@ -9,6 +9,9 @@ router.post("/add-sub-category", validate(subCategoryValidationSchema), subCateg
 // Route to get sub-categories with optional category ID
 router.get("/get-sub-categories/:id?", subCategoryController.getSubCategory);
 
+// Route to get sub-categories with optional  ID
+router.get("/get-sub-category/:id", subCategoryController.getCategoryById);
+
 // Route to update a sub-category
 router.patch("/update-sub-category/:id", validate(updateSubCategoryValidationSchema), subCategoryController.updateSubCategory);
 

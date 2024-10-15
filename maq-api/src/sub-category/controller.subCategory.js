@@ -1,4 +1,5 @@
-const subCategoryService = require("./service.subCategory");
+const serviceSubCategory = require("./service.subCategory");
+
 const subCategoryController = {};
 
 // Add subCategory
@@ -70,6 +71,26 @@ subCategoryController.getSubCategory = async (req, res) => {
       status: false,
       message: "Oops! Something went wrong while fetching sub-categories. Please try again later.",
       error: error.message,
+    });
+  }
+};
+
+// //get Category by id
+subCategoryController.getCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getSubCategoryById = await serviceSubCategory.getSubCategoryById(id);
+    return res.send({
+      status: true,
+      message: "Sub Category retrieved successfully.",
+      data: getSubCategoryById,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching the Sub category. Please try again later.",
+      error: error.message, // Optional, for debugging purposes
     });
   }
 };
