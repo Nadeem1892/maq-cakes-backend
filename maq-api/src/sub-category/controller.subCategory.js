@@ -11,7 +11,7 @@ subCategoryController.addSubCategory = async (req, res) => {
     );
 
     if (existSubCategory) {
-      return res.status(400).json({
+      return res.send({
         status: false,
         message: `Sub-Category '${subCategoryName}' already exists.`,
       });

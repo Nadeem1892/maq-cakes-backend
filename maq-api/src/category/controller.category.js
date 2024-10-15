@@ -11,7 +11,7 @@ categoryController.addCategory = async (req, res) => {
     const existingCategory = await serviceCategory.existingCategory(categoryName);
 
     if (existingCategory) {
-      return res.status(400).json({
+      return res.send({
         status: false,
         message: `Category '${categoryName}' already exists.`,
       });

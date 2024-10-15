@@ -6,14 +6,15 @@ const productController = {};
 productController.addProduct = async (req, res) => {
   try {
     const existingProduct = await serviceProduct.existingProduct(req.body.name);
+    
     if (existingProduct) {
-      return res.status(400).json({
+      return res.send({
         status: false,
         message: `Product '${req.body.name}' already exists.`,
+       
       });
     }
     const product = await serviceProduct.add(req.body);
-    
     return res.status(201).json({
       status: true,
       message: `Product added successfully.`,
