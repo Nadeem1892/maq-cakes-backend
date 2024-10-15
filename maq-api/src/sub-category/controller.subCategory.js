@@ -7,7 +7,7 @@ subCategoryController.addSubCategory = async (req, res) => {
   try {
     const { subCategoryName, categoryId } = req.body;
 
-    const existSubCategory = await subCategoryService.existingSubCategory(
+    const existSubCategory = await serviceSubCategory.existingSubCategory(
       subCategoryName
     );
 
@@ -17,7 +17,7 @@ subCategoryController.addSubCategory = async (req, res) => {
         message: `Sub-Category '${subCategoryName}' already exists.`,
       });
     }
-    const addSubCategory = await subCategoryService.add({
+    const addSubCategory = await serviceSubCategory.add({
       subCategoryName,
       categoryId,
     });
@@ -29,8 +29,7 @@ subCategoryController.addSubCategory = async (req, res) => {
   } catch (error) {
     return res.send({
       status: false,
-      message:
-        "Oops! Something went wrong while adding the category. Please try again.",
+      message: "Oops! Something went wrong while adding the category. Please try again.",
       error: error.message, // Optional, for debugging purposes
     });
   }
@@ -43,7 +42,7 @@ subCategoryController.getSubCategory = async (req, res) => {
     const { page = 1, limit = 10 } = req.query; // Get pagination params from query
 
     if (id) {
-      const getSubCategory = await subCategoryService.get(id);
+      const getSubCategory = await serviceSubCategory.get(id);
 
       if (getSubCategory.length === 0) {
         return res.status(404).send({
@@ -58,7 +57,7 @@ subCategoryController.getSubCategory = async (req, res) => {
         data: getSubCategory,
       });
     } else {
-      const { total, subCategories } = await subCategoryService.getAll(page, limit);
+      const { total, subCategories } = await serviceSubCategory.getAll(page, limit);
       return res.send({
         status: true,
         message: "All sub-categories retrieved successfully.",
@@ -101,7 +100,7 @@ subCategoryController.updateSubCategory = async (req, res) => {
     const { id } = req.params;
     const { subCategoryName } = req.body;
 
-    const updateSubCategory = await subCategoryService.update(id, {subCategoryName});
+    const updateSubCategory = await serviceSubCategory.update(id, {subCategoryName});
 
     if (!updateSubCategory) {
       return res.send({
@@ -132,7 +131,7 @@ subCategoryController.daleteSubCategory = async (req, res) => {
     const { id } = req.params;
 
     // Soft delete the category (set isDeleted to true)
-    const deleteSubCategory = await subCategoryService.delete(id);
+    const deleteSubCategory = await serviceSubCategory.delete(id);
 
     //check exist ot not
     if (!deleteSubCategory) {
