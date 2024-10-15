@@ -12,10 +12,16 @@ serviceFlavour.add = async ({flavourName}) => {
 return await Flavour.create({flavourName})
 }
 
-//get
+//get ALL
 serviceFlavour.get = async () => {
 return await Flavour.find({isDeleted:false}).sort({ flavourName: 1 });    
 }
+
+// //get Category by id 
+serviceFlavour.getFlavourById = async (id) => {
+  // Fetch the user by ID from the database
+  return await Flavour.findById(id);
+},
 
 //Update
 serviceFlavour.update = async (id, { flavourName }) => {

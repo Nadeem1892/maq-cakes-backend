@@ -18,10 +18,10 @@ serviceCategory.get = async () => {
 }
 
 // //get Category by id 
-// serviceCategory.getCategoryById = async (id) => {
-//     // Fetch the user by ID from the database
-//     return await Category.findById(id);
-//   },
+serviceCategory.getCategoryById = async (id) => {
+    // Fetch the user by ID from the database
+    return await Category.findById(id);
+  },
 
 
   // //find by category is deleting

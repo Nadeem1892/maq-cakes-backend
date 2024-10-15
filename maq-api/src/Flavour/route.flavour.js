@@ -5,6 +5,7 @@ const {flavourValidationSchema} = require("../validators/flavourValidation")
 
 router.post("/add-flavour",validate(flavourValidationSchema), flavourController.addFlavour)
 router.get("/get-flavours", flavourController.getFlavours)
+router.get("/get-flavour/:id", flavourController.getFlavourById)
 router.patch("/update-flavour/:id",validate(flavourValidationSchema), flavourController.updateFlavour)
 router.delete("/delete-flavour/:id", flavourController.deleteFlavour)
 

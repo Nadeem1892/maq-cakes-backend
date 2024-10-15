@@ -55,34 +55,24 @@ categoryController.getAllCategory = async (req, res) => {
 };
 
 // //get Category by id
-// categoryController.getCategoryById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const getCategoryById = await serviceCategory.getCategoryById(id);
-    
-//     // Check if the category exists and is not deleted
-//     if (!getCategoryById || getCategoryById.isDeleted) {
-//         return res.send({
-//           status: false,
-//           message: "Category not found.",
-//           data: null,
-//         });
-//       }
-
-//     return res.send({
-//       status: true,
-//       message: "Category retrieved successfully.",
-//       data: getCategoryById,
-//     });
-//   } catch (error) {
-//     return res.send({
-//       status: false,
-//       message:
-//         "Oops! Something went wrong while fetching the category. Please try again later.",
-//       error: error.message, // Optional, for debugging purposes
-//     });
-//   }
-// };
+categoryController.getCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getCategoryById = await serviceCategory.getCategoryById(id);
+    return res.send({
+      status: true,
+      message: "Category retrieved successfully.",
+      data: getCategoryById,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching the category. Please try again later.",
+      error: error.message, // Optional, for debugging purposes
+    });
+  }
+};
 
 //Update Category
 categoryController.updateCategory = async (req, res) => {

@@ -50,6 +50,28 @@ controllerFlavour.getFlavours = async (req, res) => {
   }
 };
 
+
+// //get Category by id
+controllerFlavour.getFlavourById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getFlavourById = await serviceFlavour.getFlavourById(id);
+    return res.send({
+      status: true,
+      message: "Flavour retrieved successfully.",
+      data: getFlavourById,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching the category. Flavour try again later.",
+      error: error.message, // Optional, for debugging purposes
+    });
+  }
+};
+
+
 //update flavour
 controllerFlavour.updateFlavour = async (req, res) => {
   try {
