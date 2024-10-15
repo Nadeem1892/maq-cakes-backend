@@ -111,11 +111,11 @@ subCategoryController.daleteSubCategory = async (req, res) => {
     const { id } = req.params;
 
     // Soft delete the category (set isDeleted to true)
-    const deleteSubCategory = await serviceSubCategory.delete(id);
+    const deleteSubCategory = await subCategoryService.delete(id);
 
     //check exist ot not
     if (!deleteSubCategory) {
-      return res.status(404).json({
+      return res.send({
         status: false,
         message: "Sub-Category not found or already deleted.",
       });

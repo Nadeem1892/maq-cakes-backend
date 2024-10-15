@@ -10,7 +10,7 @@ controllerFlavour.addFlavour = async (req, res) => {
     const existingFlavour = await serviceFlavour.existingFlavour(flavourName);
 
     if (existingFlavour) {
-      return res.status(400).json({
+      return res.send({
         status: false,
         message: `Flavour '${flavourName}' already exists.`,
       });
