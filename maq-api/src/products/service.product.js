@@ -15,6 +15,10 @@ productService.add = async (productData) => {
   return await Product.create(productData);
 };
 
+// product by id
+productService.getById = async (id) => {
+  return await Product.findOne({ _id: id, isDeleted: false }); // Use `_id` to search
+};
 //get All By Category
 productService.getAllByCategory = async (id) => {
     return await Product.find({category:id, isDeleted:false})

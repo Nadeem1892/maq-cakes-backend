@@ -9,6 +9,8 @@ router.get("/get-products-category/:id", productController.getAllProductByCatego
 router.get("/get-products-sub-category/:id", productController.getAllProductBySubCategory)
 // get all products
 router.get("/get-products", productController.getAll)
+//get by id
+router.get("/get-products/:id", productController.getProductById)
 
 //update product
 router.patch("/update-product/:id",validate(addProductSchema), productController.updateProduct)

@@ -83,6 +83,26 @@ productController.getAllProductBySubCategory = async (req, res) => {
   }
 };
 
+//get product by id single data
+productController.getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productById = await serviceProduct.getById(id)
+    return res.send({
+      status: true,
+      message: "Products retrieved successfully.",
+      data: productById,
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message:
+        "Oops! Something went wrong while fetching Products. Please try again later.",
+      error: error.message,
+    });
+  }
+}
+
 //get all products 
 // productController.js
 productController.getAll = async (req, res) => {
