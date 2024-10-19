@@ -5,29 +5,42 @@ const productController = {};
 //Add Product
 productController.addProduct = async (req, res) => {
   try {
-    const existingProduct = await serviceProduct.existingProduct(req.body.name);
     
+    console.log(req?.body) 
+    
+    const existingProduct = await serviceProduct.existingProduct(req.body.name);
+
     if (existingProduct) {
-      return res.send({
+      return res.status(400).json({
         status: false,
         message: `Product '${req.body.name}' already exists.`,
-       
       });
     }
-    const product = await serviceProduct.add(req.body);
+
+
+    // // Prepare product data including the image path
+    // const productData = {
+    //   ...req.body,
+    //   image: req.file.path, // Ensure this is set to the correct path
+    // };
+
+    const product = await serviceProduct.add(req?.body);
     return res.status(201).json({
       status: true,
       message: `Product added successfully.`,
       data: product,
     });
   } catch (error) {
+    console.error(error); // Log the error for debugging
     return res.status(500).json({
       status: false,
-      message: "Failed to add flavour.",
-      error: error.message, // Send the error message for debugging
+      message: "Failed to add product.",
+      error: error.message,
     });
   }
 };
+
+
 // get all products by category or sub category
 productController.getAllProductByCategoryOrSubCategory = async (req, res) => {
   try {

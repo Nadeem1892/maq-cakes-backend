@@ -1,8 +1,11 @@
 const router = require("express").Router()
 const productController = require("./controller.product")
+
 const validate = require("../../middelWere/validationMiddleware")
-const { addProductSchema, updateProductSchema } = require("../validators/productValidation")
-router.post("/add-product",validate(addProductSchema), productController.addProduct)
+const { addProductSchema} = require("../validators/productValidation")
+const upload = require("../../middelWere/multer")
+
+router.post("/add-product", upload.single('image'), validate(addProductSchema), productController.addProduct);
 //get all product by category or sub category
 router.get("/get-products-categoty-or-subcategory/:id", productController.getAllProductByCategoryOrSubCategory)
 // get all products

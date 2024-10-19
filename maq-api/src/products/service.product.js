@@ -12,6 +12,7 @@ productService.existingProduct = async (name) => {
 
 //add product
 productService.add = async (productData) => {
+  console.log(productData)
   return await Product.create(productData);
 };
 
