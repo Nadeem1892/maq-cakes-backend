@@ -28,13 +28,12 @@ productController.addProduct = async (req, res) => {
     });
   }
 };
-
-// get all product by category
-productController.getAllProductByCategory = async (req, res) => {
+// get all products by category or sub category
+productController.getAllProductByCategoryOrSubCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const productByCategory = await serviceProduct.getAllByCategory(id);
-    if (productByCategory.length === 0) {
+    const productByCategoryOrSubCategory = await serviceProduct.getAllByCategoryOrSubCategory(id);
+    if (productByCategoryOrSubCategory.length === 0) {
       return res.status(400).json({
         status: false,
         message: `Products not Found.`,
@@ -44,7 +43,7 @@ productController.getAllProductByCategory = async (req, res) => {
     return res.send({
       status: true,
       message: "Products retrieved successfully.",
-      data: productByCategory,
+      data: productByCategoryOrSubCategory,
     });
   } catch (error) {
     return res.send({
@@ -56,32 +55,6 @@ productController.getAllProductByCategory = async (req, res) => {
   }
 };
 
-//get all product by sub Category
-productController.getAllProductBySubCategory = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const productBySubCategory = await serviceProduct.getAllBySubCategory(id);
-    if (productBySubCategory.length === 0) {
-      return res.status(400).json({
-        status: false,
-        message: `Products not Found.`,
-      });
-    }
-
-    return res.send({
-      status: true,
-      message: "Products retrieved successfully.",
-      data: productBySubCategory,
-    });
-  } catch (error) {
-    return res.send({
-      status: false,
-      message:
-        "Oops! Something went wrong while fetching Products. Please try again later.",
-      error: error.message,
-    });
-  }
-};
 
 //get product by id single data
 productController.getProductById = async (req, res) => {

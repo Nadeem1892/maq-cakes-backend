@@ -19,14 +19,15 @@ productService.add = async (productData) => {
 productService.getById = async (id) => {
   return await Product.findOne({ _id: id, isDeleted: false }); // Use `_id` to search
 };
-//get All By Category
-productService.getAllByCategory = async (id) => {
-    return await Product.find({category:id, isDeleted:false})
-}
 
-//get All By Sub-Category
-productService.getAllBySubCategory = async (id) => {
-    return await Product.find({subCategory:id, isDeleted:false})
+//get All By Id All Products Category or Sub Category
+productService.getAllByCategoryOrSubCategory = async (id) => {
+  return await Product.find({
+    $or: [
+      { category: id, isDeleted: false },
+      { subCategory: id, isDeleted: false }
+    ]
+  });
 }
 
 //  productService.js
