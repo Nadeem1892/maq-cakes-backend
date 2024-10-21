@@ -1,44 +1,23 @@
 const serviceProduct = require("./service.product");
-const upload = require('../../middelWere/multer'); // Adjust the path as necessary
+
 
 const productController = {};
 
 //Add Product
 productController.addProduct = async (req, res) => {
   try {
-    
-    console.log(req?.body,"body");
-    console.log(req.file,"path"); // Log the uploaded file info 
-    
     const existingProduct = await serviceProduct.existingProduct(req.body.name);
 
     if (existingProduct) {
-      return res.status(400).json({
-        status: false,
-        message: `Product '${req.body.name}' already exists.`,
-      });
+      return res.status(400).send({ status: false, message: `Product '${req.body.name}' already exists.` });
     }
 
 
-    // Prepare product data including the image path
-    const productData = {
-      ...req.body,
-      image: req.file.path, // Ensure this is set to the correct path
-    };
-
-    const product = await serviceProduct.add(productData);
-    return res.status(201).json({
-      status: true,
-      message: `Product added successfully.`,
-      data: product,
-    });
+    const product = await serviceProduct.add(req.body);
+    return res.status(201).json({ status: true, message: 'Product added successfully.', product });
   } catch (error) {
-    console.error(error); // Log the error for debugging
-    return res.status(500).json({
-      status: false,
-      message: "Failed to add product.",
-      error: error.message,
-    });
+    console.error(error);
+    return res.status(500).json({ status: false, message: 'Failed to add product.', error: error.message });
   }
 };
 
