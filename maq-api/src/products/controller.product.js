@@ -1,4 +1,5 @@
 const serviceProduct = require("./service.product");
+const upload = require('../../middelWere/multer'); // Adjust the path as necessary
 
 const productController = {};
 
@@ -6,7 +7,8 @@ const productController = {};
 productController.addProduct = async (req, res) => {
   try {
     
-    console.log(req?.body) 
+    console.log(req?.body,"body");
+    console.log(req.file,"path"); // Log the uploaded file info 
     
     const existingProduct = await serviceProduct.existingProduct(req.body.name);
 
@@ -18,13 +20,13 @@ productController.addProduct = async (req, res) => {
     }
 
 
-    // // Prepare product data including the image path
-    // const productData = {
-    //   ...req.body,
-    //   image: req.file.path, // Ensure this is set to the correct path
-    // };
+    // Prepare product data including the image path
+    const productData = {
+      ...req.body,
+      image: req.file.path, // Ensure this is set to the correct path
+    };
 
-    const product = await serviceProduct.add(req?.body);
+    const product = await serviceProduct.add(productData);
     return res.status(201).json({
       status: true,
       message: `Product added successfully.`,
