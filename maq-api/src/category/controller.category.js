@@ -52,7 +52,7 @@ categoryController.getAllCategory = async (req, res) => {
       error: error.message,
     });
   }
-};
+};  
 
 // //get Category by id
 categoryController.getCategoryById = async (req, res) => {
