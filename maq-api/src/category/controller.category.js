@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const serviceCategory = require("./service.category");
 const categoryService = require("./service.category");
 
@@ -8,7 +9,9 @@ categoryController.addCategory = async (req, res) => {
   try {
     const { categoryName } = req.body;
 
-    const existingCategory = await serviceCategory.existingCategory(categoryName);
+    const existingCategory = await serviceCategory.existingCategory(
+      categoryName
+    );
 
     if (existingCategory) {
       return res.send({
@@ -39,6 +42,13 @@ categoryController.addCategory = async (req, res) => {
 categoryController.getAllCategory = async (req, res) => {
   try {
     const getAll = await categoryService.get();
+    if (getAll.length == 0) {
+      return res.send({
+        status: false,
+        message: "Categories not found.",
+      });
+    }
+
     return res.send({
       status: true,
       message: "Categories retrieved successfully.",
@@ -52,13 +62,31 @@ categoryController.getAllCategory = async (req, res) => {
       error: error.message,
     });
   }
-};  
+};
 
-// //get Category by id
+//get Category by id
 categoryController.getCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Validate if the id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({
+        status: false,
+        message: "Invalid category ID format.",
+      });
+    }
+
     const getCategoryById = await serviceCategory.getCategoryById(id);
+
+    // Check if category exists
+    if (!getCategoryById) {
+      return res.status(404).send({
+        status: false,
+        message: "Category not found or has been deleted.",
+      });
+    }
+
     return res.send({
       status: true,
       message: "Category retrieved successfully.",
@@ -79,6 +107,14 @@ categoryController.updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { categoryName } = req.body;
+
+    // Validate if the id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({
+        status: false,
+        message: "Invalid category ID format.",
+      });
+    }
 
     const updateCategory = await serviceCategory.update(id, { categoryName });
 
@@ -106,35 +142,32 @@ categoryController.updateCategory = async (req, res) => {
 
 //Delete Category
 categoryController.deleteCategory = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-  
-      // Soft delete the category (set isDeleted to true)
-      const deleteCategory = await serviceCategory.delete(id);
-  //check exist ot not
-  if (!deleteCategory) {
-    return res.status(404).json({
-      status: false,
-      message: "Category not found or already deleted.",
-    });
-  }
-      
-        return res.status(200).json({
-          status: true,
-          message: "Category deleted successfully.",
-          data: deleteCategory._id,
-        });
-      
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        status: "ERR",
-        message: "Something went wrong. Please try again later.",
-        data: null,
+  try {
+    const { id } = req.params;
+
+    // Soft delete the category (set isDeleted to true)
+    const deleteCategory = await serviceCategory.delete(id);
+    //check exist ot not
+    if (!deleteCategory) {
+      return res.status(404).json({
+        status: false,
+        message: "Category not found or already deleted.",
       });
     }
-  };
-  
+
+    return res.status(200).json({
+      status: true,
+      message: "Category deleted successfully.",
+      data: deleteCategory._id,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: "ERR",
+      message: "Something went wrong. Please try again later.",
+      data: null,
+    });
+  }
+};
 
 module.exports = categoryController;
